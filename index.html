@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Airline Safety, 1985–2014</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF1F3; --surface:#F8FAFB; --ink:#14253B; --muted:#56677A; --rule:#C6D0D8;
+  --early:#7D8CA3; --late:#C27C08; --late-soft:#F3E2C2; --note:#FFF6E3;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1825; --surface:#152233; --ink:#E4EAF0; --muted:#9AA9B9; --rule:#2B3C51;
+    --early:#8F9DB3; --late:#EDAE3C; --late-soft:#3A2E17; --note:#2A2414; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1825; --surface:#152233; --ink:#E4EAF0; --muted:#9AA9B9; --rule:#2B3C51;
+  --early:#8F9DB3; --late:#EDAE3C; --late-soft:#3A2E17; --note:#2A2414; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.65}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+a{color:inherit;text-decoration-color:var(--late);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(--late);outline-offset:2px}
+
+header.site{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg)}
+.bar{max-width:68rem;margin:0 auto;padding:.7rem 1.25rem;display:flex;align-items:baseline;gap:1.5rem;flex-wrap:wrap}
+.brand{font-family:var(--display);font-weight:600;font-size:1.35rem;letter-spacing:.01em;text-decoration:none;color:inherit;white-space:nowrap}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:.25rem 1.1rem;flex-wrap:wrap}
+nav a{font-family:var(--display);font-size:1.08rem;text-decoration:none;color:inherit;opacity:.72;padding:.15rem 0;border-bottom:2px solid transparent}
+nav a:hover{opacity:1}
+nav a[aria-current="page"]{opacity:1;border-bottom-color:var(--late)}
+
+.draft{background:var(--note);border-bottom:1px solid var(--rule);font-family:var(--display);font-size:1rem}
+.draft p{max-width:68rem;margin:0 auto;padding:.45rem 1.25rem}
+
+main{max-width:68rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+section[hidden]{display:none}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.08;letter-spacing:.005em}
+h1{font-size:clamp(2.6rem,7vw,4.6rem);margin:.2rem 0 1rem;max-width:14ch}
+h2{font-size:clamp(1.9rem,4vw,2.6rem);margin:0 0 1rem}
+h3{font-size:1.4rem;margin:2.2rem 0 .5rem}
+.prose{max-width:66ch}
+.prose p{margin:0 0 1.05em}
+.lede{font-size:1.2rem;color:var(--muted);max-width:56ch}
+.todo{background:var(--note);border-left:4px solid var(--late);padding:.8rem 1rem;margin:1.5rem 0;max-width:66ch;font-size:1rem}
+.todo strong{font-family:var(--display);font-size:1.1rem;font-weight:600}
+
+/* Departure board: the one bold element */
+.board{margin:2.2rem 0 2.6rem;background:var(--ink);color:var(--bg);padding:1.25rem 1.25rem 1rem;max-width:44rem}
+.board table{width:100%;border-collapse:collapse;font-family:var(--display)}
+.board th{font-weight:500;font-size:1rem;text-align:right;padding:0 0 .5rem;opacity:.75}
+.board th:first-child{text-align:left}
+.board td{border-top:1px solid color-mix(in srgb,var(--bg) 22%,transparent);padding:.45rem 0;font-size:1.15rem}
+.board td.n{text-align:right;font-variant-numeric:tabular-nums;font-size:clamp(1.8rem,5vw,2.6rem);font-weight:600;line-height:1}
+.board td.n.late{color:var(--late)}
+.board td.chg{text-align:right;font-size:1.05rem;opacity:.85;padding-left:1rem;white-space:nowrap}
+.board caption{caption-side:bottom;text-align:left;font-family:var(--body);font-size:.92rem;opacity:.75;padding-top:.6rem}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:1.5rem}
+.cards a{background:var(--surface);padding:1rem 1.1rem;text-decoration:none;display:block}
+.cards a:hover{background:var(--late-soft)}
+.cards b{font-family:var(--display);font-size:1.3rem;font-weight:600;display:block}
+.cards span{color:var(--muted);font-size:.95rem}
+
+ol.questions{max-width:66ch;padding-left:1.6rem}
+ol.questions li{margin-bottom:.8rem;padding-left:.3rem}
+ol.questions li::marker{font-family:var(--display);font-weight:600;color:var(--late)}
+
+.figure{background:var(--surface);border:1px solid var(--rule);padding:1.2rem;margin:1.5rem 0 2.5rem}
+.figure h3{margin-top:0}
+.controls{display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;align-items:center;margin:.4rem 0 1rem;font-family:var(--display);font-size:1.05rem}
+.seg{display:inline-flex;border:1px solid var(--rule)}
+.seg button{font:inherit;background:transparent;color:var(--ink);border:0;padding:.3rem .8rem;cursor:pointer}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+select{font:inherit;background:var(--surface);color:var(--ink);border:1px solid var(--rule);padding:.25rem .5rem}
+.legend{display:flex;gap:1.2rem;font-family:var(--display);font-size:1rem;color:var(--muted);margin-bottom:.6rem}
+.legend i{display:inline-block;width:.75rem;height:.75rem;border-radius:50%;margin-right:.35rem;vertical-align:-1px}
+.chartwrap{overflow-x:auto}
+svg text{font-family:var(--display);fill:var(--ink)}
+svg .axis{fill:var(--muted);font-size:12px}
+svg .grid{stroke:var(--rule);stroke-width:1}
+.caption{color:var(--muted);font-size:.95rem;max-width:66ch;margin:.8rem 0 0}
+
+.mapempty{border:2px dashed var(--rule);padding:3rem 1.5rem;text-align:center;color:var(--muted);margin:1.5rem 0}
+.mapempty b{display:block;font-family:var(--display);font-size:1.5rem;color:var(--ink);margin-bottom:.4rem}
+
+ol.works{list-style:none;padding:0;max-width:70ch}
+ol.works li{padding-left:2.2rem;text-indent:-2.2rem;margin-bottom:1rem}
+ol.works .ann{display:block;text-indent:0;color:var(--muted);font-size:.95rem;margin-top:.2rem}
+ol.works .flag{color:var(--late);font-family:var(--display);font-size:1rem}
+.critique h3{max-width:40ch}
+
+dl.team{display:grid;grid-template-columns:max-content 1fr;gap:.3rem 1.5rem;max-width:40rem}
+dl.team dt{font-family:var(--display);font-weight:600;font-size:1.1rem}
+dl.team dd{margin:0;color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+footer{border-top:1px solid var(--rule);color:var(--muted);font-size:.9rem}
+footer p{max-width:68rem;margin:0 auto;padding:1.2rem 1.25rem}
+@media (max-width:640px){
+  .bar{gap:.4rem 1rem}
+  main{padding-top:1.6rem}
+  .board{padding:1rem .9rem .8rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  .board td.n{animation:flip .5s ease-out both}
+  .board tr:nth-child(2) td.n{animation-delay:.08s}
+  .board tr:nth-child(3) td.n{animation-delay:.16s}
+  @keyframes flip{from{opacity:0;transform:translateY(-.35em)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="bar">
+    <a class="brand" href="#home">Airline Safety, 1985–2014</a>
+    <nav aria-label="Sections"><ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#questions">Research Questions</a></li>
+      <li><a href="#visualizations">Visualizations</a></li>
+      <li><a href="#map">Map</a></li>
+      <li><a href="#critique">Data Critique</a></li>
+      <li><a href="#bibliography">Bibliography</a></li>
+      <li><a href="#about">About</a></li>
+    </ul></nav>
+  </div>
+</header>
+<div class="draft"><p>Working draft for DH 101. Sections marked “To do” still need team content.</p></div>
+
+<main>
+<!-- HOME -->
+<section id="s-home" data-page="home">
+  <h1>Is flying safer than it used to be?</h1>
+  <p class="lede">We compare the safety records of 56 major airlines across two fifteen-year periods, and ask what the numbers can and cannot tell us about risk, regulation, and public trust.</p>
+
+  <div class="board" role="group" aria-label="Totals for all 56 airlines">
+    <table>
+      <thead><tr><th scope="col">All 56 airlines</th><th scope="col">1985–1999</th><th scope="col">2000–2014</th><th scope="col"><span class="sr">Change</span></th></tr></thead>
+      <tbody>
+        <tr><td>Incidents</td><td class="n">402</td><td class="n late">231</td><td class="chg">−43%</td></tr>
+        <tr><td>Fatal accidents</td><td class="n">122</td><td class="n late">37</td><td class="chg">−70%</td></tr>
+        <tr><td>Fatalities</td><td class="n">6,295</td><td class="n late">3,109</td><td class="chg">−51%</td></tr>
+      </tbody>
+      <caption>Source: FiveThirtyEight, compiled from the Aviation Safety Network.</caption>
+    </table>
+  </div>
+
+  <div class="prose">
+    <p>Every number on this board went down. But a raw count hides as much as it shows: it does not say how many flights each airline operated, where or why each event happened, or which airlines were left out of the dataset entirely. This project reads the numbers alongside the history around them.</p>
+  </div>
+  <div class="todo"><strong>To do: project narrative.</strong> Replace this section with the team’s first three paragraphs (assignment T9.1, due week 9): the argument, the main research question, and what a visitor will find on the site.</div>
+
+  <div class="cards">
+    <a href="#visualizations"><b>Visualizations</b><span>How each airline’s record changed</span></a>
+    <a href="#critique"><b>Data critique</b><span>Where the data comes from and what it leaves out</span></a>
+    <a href="#questions"><b>Research questions</b><span>Fifteen questions the numbers raise</span></a>
+  </div>
+</section>
+
+<!-- QUESTIONS -->
+<section id="s-questions" data-page="questions" hidden>
+  <h2>Research questions</h2>
+  <p class="prose">These questions came out of our first look at the dataset. Many reach beyond what the spreadsheet can answer on its own, which is why the project pairs the data with scholarly sources.</p>
+  <ol class="questions">
+    <li>How have advancements in aviation technology and safety regulations influenced airline safety between 1985 and 2014?</li>
+    <li>How do differences in government regulations and safety standards across countries affect the safety records of airlines?</li>
+    <li>How does an airline’s history of accidents influence public trust and passengers’ willingness to fly with that airline?</li>
+    <li>How has media coverage of major airline accidents shaped public perceptions of airline safety, regardless of actual accident rates?</li>
+    <li>What role do economic pressures and competition between airlines play in decisions regarding maintenance, staffing, and passenger safety?</li>
+    <li>How do differences in labor laws and working conditions across countries influence airline safety, particularly regarding pilot fatigue, working hours, and mandatory rest periods? To what extent might these differences help explain regional patterns in aviation accidents?</li>
+    <li>How do airlines operating in regions with challenging weather conditions, such as Southeast Asia’s monsoon seasons or Northern Europe’s snowy winters, compare in terms of accident patterns, and what does this suggest about their ability to adapt to environmental risks?</li>
+    <li>How do airlines respond to fatal accidents, and what do their responses reveal about corporate responsibility and accountability?</li>
+    <li>How do accident patterns differ between airlines operating Boeing and Airbus aircraft, and what factors should be considered before concluding that one manufacturer is safer than the other?</li>
+    <li>How has the distribution of aircraft manufacturers changed over time, particularly with the dominance of Boeing and Airbus?</li>
+    <li>What patterns can be observed in airlines’ transitions between manufacturers and how this relates to the number of accidents, and how has the representation of other commercial aircraft manufacturers evolved throughout the dataset?</li>
+    <li>How might the exclusion of smaller commercial airlines create an incomplete picture of aviation safety, particularly in regions where smaller carriers play a significant role in air transportation?</li>
+    <li>How have historical events, such as economic recessions, political conflicts, and international crises, influenced airline safety during the periods represented in the dataset?</li>
+    <li>How does the amount of aviation accident data available across different regions, such as North America, Europe, APAC, LATAM, and MEA, reflect potential geographic biases in data collection?</li>
+    <li>How have airlines used their safety records in advertising and branding to build consumer confidence, and how accurately do these messages reflect their actual safety performance?</li>
+  </ol>
+  <div class="todo"><strong>To do:</strong> choose the one or two questions the final project will actually answer, and move the rest to a “further questions” note.</div>
+</section>
+
+<!-- VISUALIZATIONS -->
+<section id="s-visualizations" data-page="visualizations" hidden>
+  <h2>Visualizations</h2>
+  <p class="prose">Draft charts built from the FiveThirtyEight dataset. Switch between raw counts and counts adjusted for airline size, since bigger airlines fly more and have more chances for something to go wrong.</p>
+
+  <div class="figure">
+    <h3>How each airline’s record changed</h3>
+    <div class="controls">
+      <label>Measure
+        <select id="metric">
+          <option value="0">Incidents</option>
+          <option value="1">Fatal accidents</option>
+          <option value="2">Fatalities</option>
+        </select>
+      </label>
+      <span class="seg" role="group" aria-label="Scale">
+        <button type="button" data-mode="raw" aria-pressed="true">Raw count</button>
+        <button type="button" data-mode="rate" aria-pressed="false">Per airline size</button>
+      </span>
+    </div>
+    <div class="legend"><span><i style="background:var(--early)"></i>1985–1999</span><span><i style="background:var(--late)"></i>2000–2014</span></div>
+    <div class="chartwrap" id="dumbbell"></div>
+    <p class="caption" id="dumbcap"></p>
+  </div>
+
+  <div class="figure">
+    <h3>Does an airline’s past predict its future?</h3>
+    <div class="legend"><span>Incidents per billion available seat-kilometres flown per week. Points below the line improved.</span></div>
+    <div class="chartwrap" id="scatter"></div>
+    <p class="caption">Hover or tap a point to see the airline. Axes use a square-root scale so smaller airlines are not crushed into one corner. FiveThirtyEight’s original article asked this same question.</p>
+  </div>
+
+  <div class="todo"><strong>To do:</strong> write an interpretation paragraph under each chart, connecting what it shows to a research question and a source from the bibliography.</div>
+</section>
+
+<!-- MAP -->
+<section id="s-map" data-page="map" hidden>
+  <h2>Map</h2>
+  <div class="mapempty">
+    <b>Map in progress</b>
+    The dataset does not record where airlines are based or where events happened. Add a home-country column for each airline to map records by region.
+  </div>
+  <div class="todo"><strong>Suggested approach:</strong> add a “country” and “region” column (North America, Europe, Asia-Pacific, Latin America, Middle East and Africa) to the spreadsheet, then build a choropleth in Datawrapper or Flourish and paste its embed code here. This would support research questions 2, 6, 7, and 14.</div>
+</section>
+
+<!-- DATA CRITIQUE -->
+<section id="s-critique" data-page="critique" class="critique" hidden>
+  <h2>Data critique</h2>
+  <div class="prose">
+    <h3>How the data was generated</h3>
+    <p>Our dataset focuses on airline safety for 56 airlines from 1985–2014. It includes the number of incidents, fatal accidents, and total fatalities for each airline. The data is divided into two 15-year periods: 1985–1999 and 2000–2014. Available seat kilometers flown per week are also included, which shows the size and popularity of an airline. This data was used through aviation accident and incident records from the Aviation Safety Network (ASN), which provides standards for how incidents and accidents are documented and classified. The ASN follows definitions established by the International Civil Aviation Organization (ICAO) to distinguish accidents from incidents, and also records information from official investigation reports. An accident is an event involving an aircraft that results in serious or fatal injuries, significant aircraft damage, or an aircraft going missing. An incident is an event that affects or could affect flight safety but does not meet the criteria of an accident, like a near collision or small mechanical failures. Fatalities are deaths resulting from an accident, including those occurring within 30 days due to injuries sustained. One thing to note is that these classifications determine what gets included or excluded from the data. (Ex. Minor operational issues and passenger medical emergencies are excluded.) This can largely affect how the public interprets airline safety.</p>
+
+    <h3>Original sources</h3>
+    <p>The source of our GitHub dataset is a publicly accessible website called Aviation Safety Network (ASN), which is operated by the Flight Safety Foundation (FSF). The Flight Safety Foundation is an international nonprofit organization founded in 1945 by Jerome F. “Jerry” Lederer, Gloria Heath, and other aviation safety advocates. The ASN website contains three major databases: ASN Accident, ASN Wikibase, and ASN Drone. The ASN Accident database collects information from official government sources, accident investigation boards, and civil aviation authorities. The website is updated daily and contains over 23,000 aviation accident and incident records dating back to 1919. These records cover commercial aircraft, defined by ASN as aircraft certified to carry 12 or more passengers, as well as military transport aircraft and corporate jets. For each aviation accident or incident, ASN provides detailed information and cites its original sources at the bottom of the record. These sources often include organizations such as the U.S. National Transportation Safety Board (NTSB), the Federal Aviation Administration (FAA), and established news outlets such as <i>The New York Times</i>. This allows users to trace the information back to its sources and assess its reliability. For our project, we will be using the ASN Accident database.</p>
+
+    <h3>Who funded the dataset</h3>
+    <p>The available documentation does not identify a specific funder for the creation of this dataset. It was published in FiveThirtyEight’s GitHub repository. The commit history shows that “ritchieking” added the dataset on July 23, 2014, and Jay Boice corrected the CSV file’s newline formatting on December 16, 2022. FiveThirtyEight also supported the creation of this dataset. At the time of creation, FiveThirtyEight was an organization under ESPN; there is no evidence that ESPN funded the creation of the dataset, but it may be possible. This dataset originated from the website Aviation Safety Network, which includes all airplane accidents from 1919 to the present (last accident recorded Oct/08/2026). There is no evidence indicating that Aviation Safety Network funded this dataset.</p>
+
+    <h3>What the spreadsheet leaves out</h3>
+    <p>The airline safety dataset that we are working with tells us about incidents, fatal accidents, and fatalities across 56 airlines. Still, it leaves out some important factors that could help our team explain differences in airline safety. One significant limitation that our team recognized was the lack of the total number of flights or passengers carried by each airline in the two time periods. It does include available seat kilometers per week, but this measure doesn’t provide a full picture of each airline’s operations throughout the 30 years. Larger airlines are going to service more frequent flights, meaning that they could experience more incidents as they have more frequent exposure to risk. Without this information, it would be difficult to tell whether an airline with more incidents is actually less safe than other ones with fewer incidents. Also, our dataset does not explain the cause or circumstances surrounding each incident. Factors such as weather conditions, mechanical failures, or air traffic control could all contribute to these incidents, but none are represented in the dataset. The data also excludes the geographic location of the incidents, which would be valuable insight on different geographic operating environments and regional airline information.</p>
+    <p>Another limitation we have seen is the grouping of two 15-year time periods instead of a clear yearly breakdown; this makes it slightly more difficult to identify specific years when the safety might have drastically increased or decreased based on regulations and other safety factors. Therefore, these omissions in data tell us that the number of incidents alone doesn’t necessarily tell us the full story of airline safety. Our group will spend significant time researching other social and political factors occurring around the world in the two time periods of data that we are working with.</p>
+
+    <h3>The dataset’s ontology</h3>
+    <p>FiveThirtyEight organizes the data into categories such as incidents, fatal accidents, and fatalities, encouraging us to judge airlines based on these numbers alone rather than the full story. It is formatted to influence the way we understand or compare airline safety. An airline with more incidents might seem less safe, even though they just operate more flights than smaller airlines. The choice of categories and data displayed can shape a narrative or mislead interpretations. It leaves out important factors that influence safety, like weather conditions, pilot error, political tensions, and differences in operating sizes and regulations. The dataset also groups information into two 15-year periods, overlooking improvements or changes that could have happened within individual years. If this dataset were our only source, we would miss more personal experiences from passengers, specific outlines of ‘incidents’, and the circumstances that surround them. We are encouraged to judge these airlines based on numerical data rather than understanding the full story, which is what we want to work towards refining.</p>
+  </div>
+</section>
+
+<!-- BIBLIOGRAPHY -->
+<section id="s-bibliography" data-page="bibliography" hidden>
+  <h2>Annotated bibliography</h2>
+  <div class="todo"><strong>To do:</strong> add a two- to three-sentence annotation under each source (what it argues and how it supports our project). Items marked “check” need a decision before submission.</div>
+  <ol class="works">
+    <li>Alcaide, Maria Ángeles, et al. “Mathematical Modeling of the Financial Impact of Air Crashes on Airlines and Involved Manufacturers.” <i>Mathematics</i>, vol. 10, no. 5, 2022, p. 715. https://doi.org/10.3390/math10050715.<span class="ann">Annotation to come.</span></li>
+    <li>Baidzawi, I. J., et al. “A Review of Accidents &amp; Incidents on Boeing and Airbus Commercial Aircraft’s Avionics-Related System in Two Decades (1996–2015).” <i>IOP Conference Series: Materials Science and Engineering</i>, vol. 697, no. 1, 2019, p. 012031. https://doi.org/10.1088/1757-899X/697/1/012031.<span class="ann">Annotation to come.</span></li>
+    <li>Baker, Susan P., et al. “Pilot Error in Air Carrier Mishaps: Longitudinal Trends Among 558 Reports, 1983–2002.” <i>Aviation, Space, and Environmental Medicine</i>, vol. 79, no. 1, 2008, pp. 2–6. https://doi.org/10.3357/ASEM.2200.2008.<span class="ann">Annotation to come.</span></li>
+    <li>Barnett, Arnold. “Cross-National Differences in Aviation Safety Records.” <i>Transportation Science</i>, vol. 44, no. 3, 2010, pp. 322–332. https://doi.org/10.1287/trsc.1090.0313.<span class="ann">Annotation to come.</span></li>
+    <li>Barnett, Arnold, et al. “Airline Safety: Some Empirical Findings.” <i>Management Science</i>, vol. 25, no. 11, 1979, pp. 1045–56. https://doi.org/10.1287/mnsc.25.11.1045.<span class="ann">Annotation to come.</span></li>
+    <li>Benabbad Touirs, Bahia. “Boeing Co: Ethical Failures and Business Scandals.” <i>Journal of Global Awareness</i>, vol. 4, no. 2, 2023, pp. 1–11. https://doi.org/10.24073/jga/4/02/09.<span class="ann">Annotation to come.</span></li>
+    <li>Eilstrup-Sangiovanni, Mette. “Ordering Global Governance Complexes: The Evolution of the Governance Complex for International Civil Aviation.” <i>The Review of International Organizations</i>, vol. 17, no. 2, 2022, pp. 293–322. https://doi.org/10.1007/s11558-020-09411-z.<span class="ann">Annotation to come.</span></li>
+    <li>Gao, Yi, et al. “The Temporal Dynamics of Public Attention to Aviation Safety Events.” <i>Journal of Safety Research</i>, vol. 97, 2026, pp. 598–611. https://doi.org/10.1016/j.jsr.2026.05.003. <span class="flag">Check: also listed by another member under “Sun, Jialong”; confirm the first author.</span><span class="ann">Annotation to come.</span></li>
+    <li>Layton, Gary R. <i>Aviation Safety: Comparing National and Regional Governmental Regulatory Commercial Oversight Affiliations</i>. 2009. Northcentral University, PhD dissertation. <span class="flag">Check: dissertations may not count toward the journal-article requirement.</span><span class="ann">Annotation to come.</span></li>
+    <li>National Commission on Terrorist Attacks upon the United States. <i>The 9/11 Commission Report: Final Report of the National Commission on Terrorist Attacks upon the United States</i>. Authorized ed., W. W. Norton, 2004.<span class="ann">Annotation to come.</span></li>
+    <li>Nita, Ion-Andrei, et al. “Aviation Accidents Related to Atmospheric Instability in the United States (2000–2020).” <i>Theoretical and Applied Climatology</i>, vol. 155, no. 6, 2024, pp. 5483–97. https://doi.org/10.1007/s00704-024-04968-w.<span class="ann">Annotation to come.</span></li>
+    <li>Oster, Clinton V., Jr., et al. “Analyzing Aviation Safety: Problems, Challenges, Opportunities.” <i>Research in Transportation Economics</i>, vol. 43, no. 1, 2013, pp. 148–164. https://doi.org/10.1016/j.retrec.2012.12.001.<span class="ann">Annotation to come.</span></li>
+    <li>Passenier, David, et al. “Modeling Safety Culture as a Socially Emergent Phenomenon: A Case Study in Aircraft Maintenance.” <i>Computational and Mathematical Organization Theory</i>, vol. 22, 2016, pp. 487–520. https://doi.org/10.1007/s10588-016-9212-6.<span class="ann">Annotation to come.</span></li>
+    <li>Rose, Nancy L. “Profitability and Product Quality: Economic Determinants of Airline Safety Performance.” <i>Journal of Political Economy</i>, vol. 98, no. 5, 1990, pp. 944–964. https://doi.org/10.1086/261714.<span class="ann">Annotation to come.</span></li>
+    <li>Samarra, Joana, et al. “Uncovering the Hidden Correlations between Socioeconomic Indicators and Aviation Accidents in the United States.” <i>Applied Sciences</i>, vol. 13, no. 14, 2023, article 7997. https://doi.org/10.3390/app13147997.<span class="ann">Annotation to come.</span></li>
+    <li>van der Meer, Toni G. L. A., et al. “Mediatization and the Disproportionate Attention to Negative News: The Case of Airplane Crashes.” <i>Journalism Studies</i>, vol. 20, no. 6, 2019, pp. 783–803. https://doi.org/10.1080/1461670X.2018.1423632.<span class="ann">Annotation to come.</span></li>
+    <li>Walker, Thomas John, et al. “On the Performance of Airlines and Airplane Manufacturers Following Aviation Disasters.” <i>Canadian Journal of Administrative Sciences</i>, vol. 22, no. 1, 2005, pp. 21–34. https://doi.org/10.1111/j.1936-4490.2005.tb00358.x.<span class="ann">Annotation to come.</span></li>
+    <li>Wild, Graham. “A Quantitative Study of Aircraft Maintenance Accidents in Commercial Air Transport.” <i>Aerospace</i>, vol. 10, no. 8, 2023, article 689. https://doi.org/10.3390/aerospace10080689.<span class="ann">Annotation to come.</span></li>
+  </ol>
+</section>
+
+<!-- ABOUT -->
+<section id="s-about" data-page="about" hidden>
+  <h2>About this project</h2>
+  <div class="prose">
+    <p>This site was made for Digital Humanities 101 at UCLA. It uses FiveThirtyEight’s airline safety dataset, which counts incidents, fatal accidents, and fatalities for 56 airlines across 1985–1999 and 2000–2014, drawn from the Aviation Safety Network.</p>
+  </div>
+  <h3>Team</h3>
+  <dl class="team">
+    <dt>Catherine</dt><dd>Role to be added</dd>
+    <dt>Kalila</dt><dd>Role to be added</dd>
+    <dt>Lucas</dt><dd>Role to be added</dd>
+    <dt>Mateen</dt><dd>Role to be added</dd>
+    <dt>William</dt><dd>Role to be added</dd>
+    <dt>Yunting</dt><dd>Role to be added</dd>
+  </dl>
+  <h3>Methodology</h3>
+  <div class="todo"><strong>To do:</strong> explain how the data was cleaned, which tools made each chart and the map, and why the team chose them.</div>
+  <h3>Generative AI disclosure</h3>
+  <div class="todo"><strong>To do:</strong> list every AI tool the team used and for what. For example, this draft layout and its charts were generated with Claude (Anthropic), and some source searching was done with ChatGPT.</div>
+  <h3>Acknowledgments</h3>
+  <div class="todo"><strong>To do:</strong> thank instructors, TAs, and any data or tool providers.</div>
+</section>
+</main>
+
+<footer><p>Data: FiveThirtyEight, “airline-safety,” compiled from the Aviation Safety Network. Draft site, DH 101, Fall 2026.</p></footer>
+
+<script>
+const DATA = [["Aer Lingus",320906734,2,0,0,0,0,0],["Aeroflot*",1197672318,76,14,128,6,1,88],["Aerolineas Argentinas",385803648,6,0,0,1,0,0],["Aeromexico*",596871813,3,1,64,5,0,0],["Air Canada",1865253802,2,0,0,2,0,0],["Air France",3004002661,14,4,79,6,2,337],["Air India*",869253552,2,1,329,4,1,158],["Air New Zealand*",710174817,3,0,0,5,1,7],["Alaska Airlines*",965346773,5,0,0,5,1,88],["Alitalia",698012498,7,2,50,4,0,0],["All Nippon Airways",1841234177,3,1,1,7,0,0],["American*",5228357340,21,5,101,17,3,416],["Austrian Airlines",358239823,1,0,0,1,0,0],["Avianca",396922563,5,3,323,0,0,0],["British Airways*",3179760952,4,0,0,6,0,0],["Cathay Pacific*",2582459303,0,0,0,2,0,0],["China Airlines",813216487,12,6,535,2,1,225],["Condor",417982610,2,1,16,0,0,0],["COPA",550491507,3,1,47,0,0,0],["Delta / Northwest*",6525658894,24,12,407,24,2,51],["Egyptair",557699891,8,3,282,4,1,14],["El Al",335448023,1,1,4,1,0,0],["Ethiopian Airlines",488560643,25,5,167,5,2,92],["Finnair",506464950,1,0,0,0,0,0],["Garuda Indonesia",613356665,10,3,260,4,2,22],["Gulf Air",301379762,1,0,0,3,1,143],["Hawaiian Airlines",493877795,0,0,0,1,0,0],["Iberia",1173203126,4,1,148,5,0,0],["Japan Airlines",1574217531,3,1,520,0,0,0],["Kenya Airways",277414794,2,0,0,2,2,283],["KLM*",1874561773,7,1,3,1,0,0],["Korean Air",1734522605,12,5,425,1,0,0],["LAN Airlines",1001965891,3,2,21,0,0,0],["Lufthansa*",3426529504,6,1,2,3,0,0],["Malaysia Airlines",1039171244,3,1,34,3,2,537],["Pakistan International",348563137,8,3,234,10,2,46],["Philippine Airlines",413007158,7,4,74,2,1,1],["Qantas*",1917428984,1,0,0,5,0,0],["Royal Air Maroc",295705339,5,3,51,3,0,0],["SAS*",682971852,5,0,0,6,1,110],["Saudi Arabian",859673901,7,2,313,11,0,0],["Singapore Airlines",2376857805,2,2,6,2,1,83],["South African",651502442,2,1,159,1,0,0],["Southwest Airlines",3276525770,1,0,0,8,0,0],["Sri Lankan / AirLanka",325582976,2,1,14,4,0,0],["SWISS*",792601299,2,1,229,3,0,0],["TACA",259373346,3,1,3,1,1,3],["TAM",1509195646,8,3,98,7,2,188],["TAP - Air Portugal",619130754,0,0,0,0,0,0],["Thai Airways",1702802250,8,4,308,2,1,1],["Turkish Airlines",1946098294,8,3,64,8,2,84],["United / Continental*",7139291291,19,8,319,14,2,109],["US Airways / America West*",2455687887,16,7,224,11,2,23],["Vietnam Airlines",625084918,7,3,171,1,0,0],["Virgin Atlantic",1005248585,1,0,0,0,0,0],["Xiamen Airlines",430462962,9,1,82,2,0,0]];
+// columns: name, ask, inc85, fa85, fat85, inc00, fa00, fat00
+
+/* --- page routing by #token --- */
+const pages = ["home","questions","visualizations","map","critique","bibliography","about"];
+function show(){
+  let t = location.hash.replace("#","");
+  if(!pages.includes(t)) t = "home";
+  document.querySelectorAll("main > section").forEach(s => s.hidden = s.dataset.page !== t);
+  document.querySelectorAll("nav a").forEach(a => {
+    if(a.getAttribute("href") === "#"+t) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+  });
+  window.scrollTo(0,0);
+  if(t === "visualizations"){ drawDumbbell(); drawScatter(); }
+}
+window.addEventListener("hashchange", show);
+
+/* --- helpers --- */
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){ const e = document.createElementNS(NS, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); if(parent) parent.appendChild(e); return e; }
+function txt(parent, x, y, s, attrs){ const t = el("text", Object.assign({x, y}, attrs||{}), parent); t.textContent = s; return t; }
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+function niceMax(v){ if(v<=0) return 1; const p = Math.pow(10, Math.floor(Math.log10(v))); for(const m of [1,2,2.5,5,10]) if(m*p >= v) return m*p; return 10*p; }
+const fmt = v => v >= 100 ? Math.round(v).toLocaleString("en-US") : (v >= 10 ? v.toFixed(1) : v.toFixed(2).replace(/\.?0+$/,""));
+
+/* --- dumbbell --- */
+let metric = 0, mode = "raw";
+const labels = ["incidents","fatal accidents","fatalities"];
+function drawDumbbell(){
+  const box = document.getElementById("dumbbell"); box.innerHTML = "";
+  const rows = DATA.map(r => {
+    const size = r[1] / 1e9;
+    let a = r[2+metric], b = r[5+metric];
+    if(mode === "rate"){ a /= size; b /= size; }
+    return {name:r[0], a, b};
+  }).sort((p,q) => (q.a+q.b) - (p.a+p.b) || p.name.localeCompare(q.name));
+  const W = 720, L = 190, R = 24, T = 30, RH = 17, H = T + rows.length*RH + 10;
+  const max = niceMax(Math.max(...rows.map(r => Math.max(r.a, r.b))));
+  const x = v => L + (v/max)*(W-L-R);
+  const svg = el("svg", {viewBox:`0 0 ${W} ${H}`, width:"100%", role:"img", "aria-label":`Dot plot of ${labels[metric]} per airline in two periods`}, box);
+  svg.style.minWidth = "560px";
+  for(let i=0;i<=5;i++){ const v = max*i/5, X = x(v);
+    el("line",{x1:X,x2:X,y1:T-8,y2:H-6,class:"grid"},svg);
+    txt(svg, X, T-14, fmt(v), {class:"axis","text-anchor":"middle"}); }
+  rows.forEach((r,i) => {
+    const y = T + i*RH + RH/2;
+    txt(svg, L-10, y+4, r.name, {"text-anchor":"end","font-size":"13"});
+    el("line",{x1:x(r.a),x2:x(r.b),y1:y,y2:y,stroke:css("--rule"),"stroke-width":3},svg);
+    const c1 = el("circle",{cx:x(r.a),cy:y,r:4.5,fill:css("--early")},svg);
+    const c2 = el("circle",{cx:x(r.b),cy:y,r:4.5,fill:css("--late")},svg);
+    el("title",{},c1).textContent = `${r.name}, 1985–1999: ${fmt(r.a)}`;
+    el("title",{},c2).textContent = `${r.name}, 2000–2014: ${fmt(r.b)}`;
+  });
+  const fewer = rows.filter(r => r.b < r.a).length, more = rows.filter(r => r.b > r.a).length;
+  document.getElementById("dumbcap").textContent =
+    `${fewer} of 56 airlines had fewer ${labels[metric]} in 2000–2014 than in 1985–1999; ${more} had more. ` +
+    (mode === "rate" ? "Values are per billion available seat-kilometres flown per week, a rough size measure taken from one point in time (see Data critique)." : "Raw counts favour small airlines, which simply fly less.") +
+    " Asterisks mark airlines whose regional subsidiaries are included.";
+}
+document.getElementById("metric").addEventListener("change", e => { metric = +e.target.value; drawDumbbell(); });
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+  mode = b.dataset.mode;
+  document.querySelectorAll(".seg button").forEach(o => o.setAttribute("aria-pressed", String(o === b)));
+  drawDumbbell();
+}));
+
+/* --- scatter --- */
+function drawScatter(){
+  const box = document.getElementById("scatter"); box.innerHTML = "";
+  const pts = DATA.map(r => { const s = r[1]/1e9; return {name:r[0], a:r[2]/s, b:r[5]/s}; });
+  const W = 640, H = 460, L = 56, R = 20, T = 16, B = 50;
+  const max = niceMax(Math.max(...pts.map(p => Math.max(p.a, p.b))));
+  const sx = v => L + Math.sqrt(v/max)*(W-L-R);
+  const sy = v => H-B - Math.sqrt(v/max)*(H-T-B);
+  const svg = el("svg",{viewBox:`0 0 ${W} ${H}`, width:"100%", role:"img", "aria-label":"Scatter plot of incidents per airline size, 1985–1999 against 2000–2014"}, box);
+  svg.style.minWidth = "420px";
+  const ticks = [0,1,5,10,20,40,max].filter((v,i,a) => v <= max && a.indexOf(v) === i);
+  ticks.forEach(v => {
+    el("line",{x1:sx(v),x2:sx(v),y1:T,y2:H-B,class:"grid"},svg);
+    el("line",{x1:L,x2:W-R,y1:sy(v),y2:sy(v),class:"grid"},svg);
+    txt(svg, sx(v), H-B+18, fmt(v), {class:"axis","text-anchor":"middle"});
+    txt(svg, L-8, sy(v)+4, fmt(v), {class:"axis","text-anchor":"end"});
+  });
+  el("line",{x1:sx(0),y1:sy(0),x2:sx(max),y2:sy(max),stroke:css("--muted"),"stroke-dasharray":"4 4"},svg);
+  txt(svg, sx(max)-4, sy(max)+16, "same rate both periods", {class:"axis","text-anchor":"end"});
+  txt(svg, (L+W-R)/2, H-8, "1985–1999 incidents per billion seat-km/week", {class:"axis","text-anchor":"middle","font-size":"13"});
+  const yl = txt(svg, 14, (T+H-B)/2, "2000–2014", {class:"axis","text-anchor":"middle","font-size":"13"});
+  yl.setAttribute("transform", `rotate(-90 14 ${(T+H-B)/2})`);
+  pts.forEach(p => {
+    const c = el("circle",{cx:sx(p.a),cy:sy(p.b),r:5,fill:css("--late"),"fill-opacity":.75,stroke:css("--surface"),"stroke-width":1},svg);
+    el("title",{},c).textContent = `${p.name}: ${fmt(p.a)} → ${fmt(p.b)}`;
+  });
+  [...pts].sort((p,q) => Math.max(q.a,q.b) - Math.max(p.a,p.b)).slice(0,4).forEach(p => {
+    txt(svg, sx(p.a)+8, sy(p.b)-6, p.name.replace("*",""), {"font-size":"12"});
+  });
+}
+
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { if(location.hash === "#visualizations"){ drawDumbbell(); drawScatter(); } });
+show();
+</script>
+</body>
+</html>
